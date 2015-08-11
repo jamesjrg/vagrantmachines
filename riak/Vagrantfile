@@ -1,0 +1,28 @@
+Vagrant.configure(2) do |config|
+
+  config.vm.box = "box-cutter/debian81"
+
+  config.vm.network "private_network", ip: "10.0.1.2"
+  config.vm.network "forwarded_port", guest: 8098, host: 8098
+  config.ssh.forward_agent = true
+
+  config.vm.synced_folder "C:/repos/salt", "/srv/salt"
+
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+    v.cpus = 2
+  end
+
+  config.vm.provision :salt do |s|
+    s.minion_config = "salt/minion"
+    s.run_highstate = "true"
+    s.log_level = "error"
+    s.pillar({
+      "providers"=> {
+        "service"=> "systemd"
+      }
+    })
+  end
+
+end
