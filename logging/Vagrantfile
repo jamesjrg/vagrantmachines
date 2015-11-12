@@ -4,6 +4,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.network "private_network", ip: "10.0.1.2"
   config.vm.network "forwarded_port", guest: 6379, host: 6379
+  config.vm.network "forwarded_port", guest: 5601, host: 5601
   config.ssh.forward_agent = true
 
   config.vm.synced_folder "C:/repos/salt", "/srv/salt"
